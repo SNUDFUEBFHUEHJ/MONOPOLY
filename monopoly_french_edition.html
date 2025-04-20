@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monopoly French Édition</title>
+    <!-- Lien vers PyScript -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pyscript@0.9.0/dist/pyscript.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Monopoly French Édition</h1>
+    <div class="container">
+        <py-script>
+            import pygame
+            import random
+            import sys
+
+            # Initialisation de Pygame
+            pygame.init()
+            pygame.mixer.init()
+
+            # Constantes
+            WIDTH, HEIGHT = 800, 800
+            TILE_SIZE = 80
+            NB_TILES = 40
+            WHITE = (255, 255, 255)
+            BLACK = (0, 0, 0)
+            BLUE = (50, 100, 255)
+            GREEN = (0, 200, 0)
+            RED = (255, 0, 0)
+
+            # Fenetre
+            WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+            pygame.display.set_caption("Monopoly French Édition")  # Nouveau nom du jeu
+            font = pygame.font.SysFont(None, 24)
+
+            # Classes et logique du jeu (exemple de la classe Case)
+            class Case:
+                def __init__(self, nom, prix=0, loyer=0):
+                    self.nom = nom
+                    self.prix = prix
+                    self.loyer = loyer
+                    self.proprietaire = None
+                    self.maisons = 0
+                    self.hotel = False
+
+            # Plateau simplifié
+            villes_fr = ["Paris", "Lyon", "Marseille", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier", "Bordeaux", "Lille"]
+
+            plateau = [
+                Case("Départ"),
+                Case(villes_fr[0], prix=60, loyer=2),
+                Case("Caisse de communauté"),
+                Case(villes_fr[1], prix=60, loyer=4),
+                Case("Impôts", prix=0, loyer=200),
+                Case("Gare 1", prix=200, loyer=25),
+                Case(villes_fr[2], prix=100, loyer=6),
+                Case("Chance"),
+                Case(villes_fr[3], prix=100, loyer=6),
+                Case(villes_fr[4], prix=120, loyer=8),
+                Case("Prison"),
+            ] + [Case(f"Case {i}") for i in range(11, 40)]
+
+            # Fonction pour afficher le plateau
+            def afficher():
+                WIN.fill(WHITE)
+                for i in range(NB_TILES):
+                    x, y = (i % 10) * TILE_SIZE, (i // 10) * TILE_SIZE
+                    pygame.draw.rect(WIN, BLACK, (x, y, TILE_SIZE, TILE_SIZE), 2)
+                    nom_case = font.render(plateau[i].nom[:8], True, BLACK)
+                    WIN.blit(nom_case, (x + 4, y + TILE_SIZE - 20))
+                pygame.display.update()
+
+            # Fonction pour gérer les tours de jeu (simplifié)
+            def jouer_tour():
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                afficher()
+
+            def main():
+                while True:
+                    jouer_tour()
+
+            if __name__ == "__main__":
+                main()
+
+        </py-script>
+    </div>
+</body>
+</html>
